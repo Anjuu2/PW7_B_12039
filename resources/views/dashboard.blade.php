@@ -16,7 +16,8 @@
     rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
     crossorigin="anonymous"> 
     <!-- Bootstrap Icons --> 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrapicons@1.18.0/font/bootstrap-icons.css"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -69,6 +70,12 @@
                                 <i class="fa-solid fa-ticket"></i> 
                                 <p> Bookings</p>
                             </a> 
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('customer') }}" class="nav-link">
+                                <i class="fa-solid fa-ticket"></i>
+                                <p>Customer</p>
+                            </a>
                         </li>
                         </ul> 
                 </nav> 

@@ -5,97 +5,92 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\Book;
+use Illuminate\Support\Facades\File;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class BookController extends Controller
 {
-    /** 
-    * index 
-    * 
-    * @return void 
-    */ 
-
+    use ValidatesRequests;
     public function index()
     {
         $book = Book::latest()->paginate(5);
 
         return view('book.index', compact('book')); 
     }
-        /** 
-         * create 
-         * 
-         * @return void 
-         */ 
         public function create() 
     { 
         return view('book.create'); 
     } 
-        /** 
-         * store 
-         * 
-         * @param Request $request 
-         * @return void 
-         */ 
         public function store(Request $request) 
     { 
         //Validasi Formulir 
         $this->validate($request, [ 
             'title' => 'required', 
             'author' => 'required', 
-            'pages' => 'required' 
-        ]); 
-        //Fungsi Simpan Data ke dalam Database 
+            'pages' => 'required',
+            'image'=> 'required|image'
+        ]);
+
+        $image = $request->file('image');
+        $imageName = $image->getClientOriginalName();
+        $image->move(public_path('public/image'), $imageName);
+        $imagePath = 'public/image/' . $imageName;
         Book::create([ 
             'title' => $request->title, 
             'author' => $request->author, 
-            'pages' => $request->pages 
+            'pages' => $request->pages,
+            'image' => $imagePath
         ]); 
         try { 
             return redirect()->route('book.index'); 
         } catch (Exception $e) { 
             return redirect()->route('book.index'); 
         } 
-    } 
-        /** 
-         * edit 
-         * 
-         * @param int $id 
-         * @return void 
-         */ 
+    }
         public function edit($id) 
     { 
         $book = Book::find($id);
         return view('book.edit', compact('book')); 
     }
-        /** 
-         * update 
-         * 
-         * @param mixed $request 
-         * @param int $id 
-         * @return void 
-         */ 
-        public function update(Request $request, $id) 
-    { 
-        $book = Book::find($id); 
-        //validate form 
-        $this->validate($request, [ 
-            'title' => 'required', 
-            'author' => 'required', 
-            'pages' => 'required' 
-        ]); 
-        $book->update([ 
-            'title' => $request->title, 
-            'author' => $request->author, 
-            'pages' => $request->pages 
-        ]); 
-        return redirect()->route('book.index')->with(['success' => 'Data 
-        Berhasil Diubah!']); 
-    } 
-        /** 
-         * destroy 
-         * 
-         * @param int $id 
-         * @return void 
-         */ 
+    public function update(Request $request, $id)
+    {
+        $book = Book::find($id);
+
+        $this->validate($request, [
+            'title' => 'nullable', 
+            'author' => 'nullable', 
+            'pages' => 'nullable',
+            'image' => 'nullable|image'
+        ]);
+
+        if($request->filled('title')) 
+        {
+            $book->title = $request->title;
+        }
+        if ($request->filled('author')) 
+        {
+            $book->author = $request->author;
+        }
+        if ($request->filled('pages')) 
+        {
+            $book->pages = $request->pages;
+        }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = $image->getClientOriginalName();
+            $image->move(public_path('public/image'), $imageName);
+            $imagePath = 'public/image/' . $imageName;
+
+            if (File::exists(public_path($book->image))) {
+                File::delete(public_path($book->image));
+            }
+            $book->image = $imagePath;
+        }
+
+        $book->save();
+        return redirect()->route('book.index')->with(['success' => 'Data Berhasil Diubah!']);
+    }
         public function destroy($id) 
     { 
         $book = Book::find($id); 

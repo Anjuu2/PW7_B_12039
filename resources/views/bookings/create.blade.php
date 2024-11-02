@@ -12,14 +12,14 @@
     <div class="container-fluid"> 
         <div class="row mb-2"> 
             <div class="col-sm-6"> 
-                <h1 class="m-0 text-primary"><i class="bi bi-pencil-square"></i> Edit Buku</h1> 
+                <h1 class="m-0 text-primary"><i class="bi bi-calendar-plus-fill"></i> Tambah Booking</h1> 
             </div> 
             <div class="col-sm-6"> 
                 <ol class="breadcrumb float-sm-right"> 
                     <li class="breadcrumb-item"> 
-                        <a href="{{ url('book') }}">Book</a> 
+                        <a href="{{ url('bookings') }}">Bookings</a> 
                     </li> 
-                    <li class="breadcrumb-item active">Edit</li> 
+                    <li class="breadcrumb-item active">Create</li> 
                 </ol> 
             </div> 
         </div> 
@@ -33,45 +33,46 @@
                 <div class="card"> 
                     <div class="card-body"> 
                         <div class="card-header bg-primary">
-                            <h5><i class="fas fa-pencil-alt"></i> Form Edit Buku</h5>
+                            <h5><i class="bi bi-plus-circle-fill"></i> Form Tambah Bookings</h5>
                         </div>
-                        <form action="{{ route('book.update', $book->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('bookings.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            @method('PUT')
-                            
                             <table class="table equal-width-table w-100">
                                 <tr>
-                                    <th>Upload Gambar</th>
-                                    <th>Judul Buku</th>
+                                    <th>Kelas</th>
+                                    <th>Harga</th>
                                 </tr>
                                 
                                 <tr>
                                     <td>
-                                        <input type="file" class='form-control' id="image" name="image" >
+                                    <input type="text" class="form-control" id="class" name="class" placeholder="Masukkan Nama Kelas">
+                                        @error('name')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" id="title" name="title" value="{{$book->title}}" placeholder="Masukkan Judul Buku" >
-                                        @error('title')
+                                    <input type="text" class="form-control" id="price" name="price" placeholder="Masukkan Harga">
+                                        @error('price')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th>Penulis</th>
-                                    <th>Jumlah Halaman</th>
+                                    <th>Pilih Buku</th>
                                 </tr>
 
                                 <tr>
-                                    <td>
-                                        <input type="text" class="form-control" id="author" name="author" value="{{$book->author}}" placeholder="Masukkan Nama Penulis" >
-                                        @error('author')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" id="pages" name="pages" value="{{$book->pages}}" placeholder="Masukkan Jumlah Halaman" >
-                                        @error('pages')
+                                    <td colspan="2">
+                                        <select id="id_book" name="id_book" class="form-control">
+                                            <option value="" disabled selected>Pilih Buku</option>
+                                            @forelse ($book as $item)
+                                                <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                            @empty
+                                                <option value="">Tidak ada buku tersedia</option>
+                                            @endforelse
+                                        </select>
+                                        @error('id book')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </td>

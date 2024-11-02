@@ -12,12 +12,12 @@
     <div class="container-fluid"> 
         <div class="row mb-2"> 
             <div class="col-sm-6"> 
-                <h1 class="m-0 text-primary"><i class="bi bi-journal-bookmark-fill"></i> Tambah Buku</h1> 
+                <h1 class="m-0 text-primary"><i class="bi bi-person-plus-fill"></i> Tambah Customer</h1> 
             </div> 
             <div class="col-sm-6"> 
                 <ol class="breadcrumb float-sm-right"> 
                     <li class="breadcrumb-item"> 
-                        <a href="{{ url('book') }}">Book</a> 
+                        <a href="{{ url('customer') }}">Customer</a> 
                     </li> 
                     <li class="breadcrumb-item active">Create</li> 
                 </ol> 
@@ -33,46 +33,67 @@
                 <div class="card"> 
                     <div class="card-body"> 
                         <div class="card-header bg-primary">
-                            <h5><i class="bi bi-plus-circle-fill"></i> Form Tambah Buku</h5>
+                            <h5><i class="bi bi-plus-circle-fill"></i> Form Tambah Customer</h5>
                         </div>
-                        <form action="{{ route('book.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('customer.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <table class="table equal-width-table w-100">
                                 <tr>
-                                    <th>Upload Gambar</th>
-                                    <th>Judul Buku</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
                                 </tr>
                                 
                                 <tr>
                                     <td>
-                                        <input type="file" class='form-control' id="image" name="image" >
-                                        @error('image')
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan Nama Customer">
+                                        @error('name')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" id="title" name="title" placeholder="Masukkan Judul Buku" >
-                                        @error('title')
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan Email Customer">
+                                        @error('email')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th>Penulis</th>
-                                    <th>Jumlah Halaman</th>
+                                    <th>No Telepon</th>
+                                    <th>Bookings</th>
                                 </tr>
 
                                 <tr>
                                     <td>
-                                        <input type="text" class="form-control" id="author" name="author" placeholder="Masukkan Nama Penulis" >
-                                        @error('author')
+                                        <label for="phone" class="font-weight-bold">No Telepon</label>
+                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Masukkan No Telepon">
+                                        @error('phone')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" id="pages" name="pages" placeholder="Masukkan Jumlah Halaman" >
-                                        @error('pages')
+                                        <select id="id_bookings" name="id_bookings" class="form-control">
+                                            <option value="" disabled selected>Pilih bookings</option>
+                                            @foreach($bookings as $booking)
+                                                <option value="{{ $booking->id }}">
+                                                {{ $booking->book->title }} ({{ $booking->class }}: {{ $booking->price }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('id_bookings')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Quantity</th>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Masukkan Quantity">
+                                        @error('quantity')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </td>
@@ -90,6 +111,5 @@
         </div> 
     </div> 
 </div> 
-
 
 @endsection

@@ -33,7 +33,8 @@
                             <div class="table-responsive p-0"> 
                                 <table class="table table-hover textnowrap"> 
                                     <thead> 
-                                        <tr> 
+                                        <tr>
+                                            <th class="text-center">Poster</th>
                                             <th class="text-center">Title</th> 
                                             <th class="text-center">Author</th> 
                                             <th class="textcenter">Page</th> 
@@ -43,7 +44,10 @@
                                     <tbody> 
                                         @forelse ($book as $item) 
                                         <tr>
-                                        <td class="text-center">{{ $item->title }}</td> 
+                                            <td class="text-center">
+                                            <img src="{{ asset($item->image) }}" alt="Book Image" width="100" height="100">
+                                            </td>
+                                            <td class="text-center">{{ $item->title }}</td> 
                                             <td class="text-center">{{ $item->author }}</td> 
                                             <td class="text-center">{{ $item->page}}</td> 
                                             <td class="text-center"> 
